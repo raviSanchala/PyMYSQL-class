@@ -24,9 +24,10 @@ jobs:
           export PATH=$PATH:$SONAR_SCANNER_PATH
           sonar-scanner --version
 
-      - name: Run SonarScanner
-        run: |
-          sonar-scanner
+      - name: SonarQube Scan
+        run: sonar-scanner
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Upload SonarQube Analysis
         uses: github/codeql-action/upload-sarif@v1
@@ -46,4 +47,4 @@ jobs:
         uses: kitabisa/sonarqube-action@v1.2.0
         with:
           host: ${{ secrets.SONARQUBE_HOST }}
-          login: ${{ secrets.SONARQUBE_TOKEN }}
+          login: ${{ secrets.SONAR_TOKEN }}
