@@ -1,33 +1,34 @@
-name: Terraform and SonarQube Code Scan
+name: Terraform Code Scan
 
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
-  terraform_code_scan:
+  code_scan:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install SonarScanner
+      - name: Download and Install SonarScanner
         run: |
+          # Download SonarScanner ZIP
           wget -q -O sonar-scanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip"
-          unzip sonar-scanner.zip
-          export PATH=$PATH:$PWD/sonar-scanner-4.7.0.2747-linux/bin
-          chmod +x $SONAR_SCANNER_PATH/sonar-scanner  # Set execute permissions on sonar-scanner binary
-          export PATH=$PATH:$SONAR_SCANNER_PATH
+          # Extract SonarScanner
+          unzip -q sonar-scanner.zip
+          # Set up PATH
+          export PATH=$PATH:$RUNNER_WORKSPACE/sonar-scanner-4.7.0.2747-linux/bin
+          # Verify installation
           sonar-scanner --version
 
-      - name: SonarQube Scan
-        run: sonar-scanner
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Run SonarScanner
+        run: |
+          sonar-scanner
 
       - name: Upload SonarQube Analysis
         uses: github/codeql-action/upload-sarif@v1
