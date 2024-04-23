@@ -1,61 +1,46 @@
-name: Terraform Code Scan
+name: SonarCloud Scan
 
 on:
   push:
     branches:
-      - master
+      - main  # Adjust branch name if needed
   pull_request:
     branches:
-      - master
+      - main  # Adjust branch name if needed
 
 jobs:
-  code_scan:
+  sonarcloud_scan:
+    name: SonarCloud Scan
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Download and Install SonarScanner
-        run: |
-          wget -q -O sonar-scanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip"
-          unzip -q sonar-scanner.zip
-          ls -l
-          echo "-----"
-          ls -l sonar-scanner-4.7.0.2747-linux
-          echo "==="
-          ls -l sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner
-          chmod +x sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner
-          export PATH=/home/runner/work/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/
-          echo "Hi:"
-          
-      - name: SonarQube Scan
-        run: |
-          /home/runner/work/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner --version
-          if [ $? -ne 0 ]; then
-            echo "SonarQube scan failed."
-            exit 1
-          fi
-        env:
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
 
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: |
+            ${{ runner.os }}-sonar
 
-      - name: Upload SonarQube Analysis
+      - name: SonarCloud Scan
+        run: |
+          ./gradlew sonarqube \
+            -Dsonar.organization=ravisanchala123456 \
+            -Dsonar.projectKey=raviSanchala_PyMYSQL-class \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=eceb47eddb02aae6f1122eff33d034afb61c8595
+
+      - name: Upload SonarCloud Quality Gate status
+        if: always()
         uses: github/codeql-action/upload-sarif@v1
         with:
-          sarif_file: ./sonarqube/out/sonar-project-*.sarif
-
-
-  sonarqube_scan:
-    name: SonarQube Scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checking out
-        uses: actions/checkout@v2
-        with:
-          # Disabling shallow clone is recommended for improving relevancy of reporting
-          fetch-depth: 0
-      - name: SonarQube Scan
-        uses: kitabisa/sonarqube-action@v1.2.0
-        with:
-          host: ${{ secrets.SONARQUBE_HOST }}
-          login: ${{ secrets.SONAR_TOKEN }}
+          sarif_file: build/reports/sonar/sonar-report.json
