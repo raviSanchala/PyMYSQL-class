@@ -21,6 +21,7 @@ jobs:
           ls -l
           unzip -q sonar-scanner.zip
           ls -l sonar-scanner-4.7.0.2747-linux
+          ls -l sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner
           chmod +x sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner
           export PATH=$PATH:$RUNNER_WORKSPACE/sonar-scanner-4.7.0.2747-linux/bin
           sonar-scanner --version
