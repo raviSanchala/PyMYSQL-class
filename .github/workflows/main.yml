@@ -23,7 +23,12 @@ jobs:
           sonar-scanner --version
 
       - name: SonarQube Scan
-        run: sonar-scanner
+        run: |
+          sonar-scanner
+          if [ $? -ne 0 ]; then
+            echo "SonarQube scan failed."
+            exit 1
+          fi
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
@@ -31,6 +36,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v1
         with:
           sarif_file: ./sonarqube/out/sonar-project-*.sarif
+
 
   sonarqube_scan:
     name: SonarQube Scan
