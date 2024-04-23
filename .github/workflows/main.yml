@@ -18,6 +18,7 @@ jobs:
       - name: Download and Install SonarScanner
         run: |
           wget -q -O sonar-scanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip"
+          ls -l
           unzip -q sonar-scanner.zip
           ls -l sonar-scanner-4.7.0.2747-linux
           chmod +x sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner
