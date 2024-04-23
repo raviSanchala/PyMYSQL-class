@@ -27,7 +27,6 @@ jobs:
           chmod +x sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner
           export PATH=/home/runner/work/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/
           echo "Hi:"
-          ls -l /home/runner/work/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux
           
       - name: SonarQube Scan
         run: |
