@@ -17,18 +17,15 @@ jobs:
 
       - name: Download and Install SonarScanner
         run: |
-          # Download SonarScanner ZIP
           wget -q -O sonar-scanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip"
-          # Extract SonarScanner
           unzip -q sonar-scanner.zip
-          # Set up PATH
           export PATH=$PATH:$RUNNER_WORKSPACE/sonar-scanner-4.7.0.2747-linux/bin
-          # Verify installation
           sonar-scanner --version
 
-      - name: Run SonarScanner
-        run: |
-          sonar-scanner
+      - name: SonarQube Scan
+        run: sonar-scanner
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Upload SonarQube Analysis
         uses: github/codeql-action/upload-sarif@v1
