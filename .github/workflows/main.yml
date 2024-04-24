@@ -25,8 +25,11 @@ jobs:
           echo "==="
           ls -l sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner/
           echo "RUNNER_WORKSPACE: $RUNNER_WORKSPACE"
+          echo "++++++"
           export PATH=$PATH:$RUNNER_WORKSPACE/sonar-scanner-4.7.0.2747-linux/bin
+          echo "********"
           ls -l $RUNNER_WORKSPACE/sonar-scanner-4.7.0.2747-linux
+          echo "//////////////"
           /home/runner/work/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner --version
 
       - name: SonarQube Scan
