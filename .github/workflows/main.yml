@@ -38,6 +38,7 @@ jobs:
           projectKey: raviSanchala_PyMYSQL-class-1
           args: >
              -Dsonar.sources=.
+             -Dsonar.exclusions=**/node_modules/**,**/vendor/**,**/*.test.js
              -Dsonar.language=terraform
              -Dsonar.verbose=true
 
