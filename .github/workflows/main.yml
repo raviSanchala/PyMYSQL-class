@@ -49,6 +49,15 @@ jobs:
             -Dsonar.language=py
             -Dsonar.verbose=true
             
-      
+      - name: SonarQube Scan
+        run: |
+          sonar-scanner \
+            -Dsonar.projectKey=your-project-key \
+            -Dsonar.host.url=https://your-sonarqube-server-url \
+            -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }} \
+            -Dsonar.sources=. \
+            -Dsonar.inclusions=mysql_connect.py,**/*.tf \
+            -Dsonar.language=py \
+            -Dsonar.verbose=true
 
       
