@@ -27,17 +27,6 @@ jobs:
           ls -l $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin
           $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner --version
 
-      - name: SonarQube Scan
-        run: |
-          $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner --version
-          if [ $? -ne 0 ]; then
-            echo "SonarQube scan failed."
-            exit 1
-          fi
-        env:
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-
       - name: Upload SonarQube Analysis
         uses: github/codeql-action/upload-sarif@v1
         with:
