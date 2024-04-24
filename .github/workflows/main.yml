@@ -24,11 +24,6 @@ jobs:
           wget -q -O sonar-scanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.5.0.2216-linux.zip"
           unzip -q sonar-scanner.zip
           
-          chmod +x sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner
-          echo "RUNNER_WORKSPACE: $RUNNER_WORKSPACE"
-          export PATH=$PATH:$RUNNER_WORKSPACE/sonar-scanner-4.7.0.2747-linux/bin
-          echo "Hi:"
-          ls -l $RUNNER_WORKSPACE/sonar-scanner-4.7.0.2747-linux
           if [ -d "/var/opt/sonar-scanner-4.7.0.2747-linux" ];then
              sudo rm -rf /var/opt/sonar-scanner-4.7.0.2747-linux
           fi
