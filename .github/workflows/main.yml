@@ -34,13 +34,11 @@ jobs:
            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           projectBaseDir: PyMYSQL-class
+          organization: ravisanchala123456
+          projectKey: raviSanchala_PyMYSQL-class-1
           args: >
-             -Dsonar.organization=ravisanchala123456
-             -Dsonar.projectKey=raviSanchala_PyMYSQL-class-1
-             -Dsonar.python.coverage.reportPaths=coverage.xml
-             -Dsonar.sources=lib/
-             -Dsonar.test.exclusions=tests/**
-             -Dsonar.tests=tests/
+             -Dsonar.sources=.
+             -Dsonar.language=terraform
              -Dsonar.verbose=true
 
       
