@@ -33,16 +33,16 @@ jobs:
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
-           GITHUB_TOKEN: ${{ secrets.PROGITHUB_TOKEN }}
-           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PROGITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          projectBaseDir: $RUNNER_WORKSPACE/PyMYSQL-class
+          projectBaseDir: PyMYSQL-class # Relative path from the repository root
           organization: ravisanchala123456
           projectKey: raviSanchala_PyMYSQL-class-1
           args: >
-             -Dsonar.sources=.
-             -Dsonar.exclusions=**/node_modules/**,**/vendor/**,**/*.test.js
-             -Dsonar.language=terraform
-             -Dsonar.verbose=true
+            -Dsonar.sources=PyMYSQL-class
+            -Dsonar.exclusions=**/node_modules/**,**/vendor/**,**/*.test.js
+            -Dsonar.language=terraform
+            -Dsonar.verbose=true
 
       
