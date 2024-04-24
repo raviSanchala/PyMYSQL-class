@@ -44,5 +44,6 @@ jobs:
             -Dsonar.exclusions=**/node_modules/**,**/vendor/**,**/*.test.js
             -Dsonar.language=terraform
             -Dsonar.verbose=true
+            -X
 
       
