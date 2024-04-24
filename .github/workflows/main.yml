@@ -44,7 +44,7 @@ jobs:
           projectKey: raviSanchala_PyMYSQL-class-1
           args: >
             -Dsonar.sources=.
-            -Dsonar.inclusions=mysql_connect.py,**/*.tf # Include your Python and Terraform files
+            -Dsonar.inclusions=mysql_connect.py,**/*.tf
             -Dsonar.exclusions=**/node_modules/**,**/vendor/**
             -Dsonar.language=py
             -Dsonar.verbose=true
