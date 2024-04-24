@@ -26,7 +26,10 @@ jobs:
           export PATH=$PATH:$RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin
           ls -l $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin
           $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner --version
-
+      
+      - name: Debug - List contents of workspace
+        run: ls -l /github/workspace/
+        
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
