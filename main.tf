@@ -1,5 +1,5 @@
 resource "aws_security_group" "my-ec2" {
-  name        = "Jenkins-Security Group"
+  name        = "Jenkins-Security Groupss"
   description = "Open 22,443,80,9000,3000"
 
   # Define a single ingress rule to allow traffic on all specified ports
