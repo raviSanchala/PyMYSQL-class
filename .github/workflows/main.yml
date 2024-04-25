@@ -20,6 +20,9 @@ jobs:
       # Add Aqua Security repository and install Trivy
       - name: Install Trivy
         run: |
+          curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+          tfsec --version
+          echo "hi:"
           echo "deb [trusted=yes] https://aquasecurity.github.io/trivy-repo/ /" | sudo tee -a /etc/apt/sources.list.d/trivy.list
           sudo apt-get update
           sudo apt-get install -y trivy
