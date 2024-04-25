@@ -15,20 +15,21 @@ jobs:
       # Checkout code
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Shallow clones should be disabled for better relevancy of analysis
 
-      # Install the latest version of tfsec from GitHub using go install
+      # Install tfsec
       - name: Install tfsec
         run: |
-          go install github.com/aquasecurity/tfsec/cmd/tfsec@latest
-
+          # Download and execute the tfsec installation script
+          curl -fsSL https://aquasecurity.github.io/tfsec/install.sh | sh
+          
           # Verify installation
           which tfsec
 
-      # Run tfsec analysis on Terraform files and generate SARIF report
+      # Run tfsec analysis on Terraform files
       - name: Run tfsec and generate SARIF report
         run: |
-          tfsec . --format sarif --out tfsec_report.sarif
+          tfsec path/to/terraform/files --format sarif --out tfsec_report.sarif
         # Specify the directory containing your Terraform files
 
       # Upload SARIF Report to GitHub
