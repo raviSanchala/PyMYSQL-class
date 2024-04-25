@@ -21,6 +21,8 @@ jobs:
       - name: Install Trivy
         run: |
           curl -sfL https://aquasecurity.github.io/trivy-repo/get | sh
+          which trivy
+          
 
       # Run Trivy analysis on Terraform files and generate SARIF report
       - name: Run Trivy and generate SARIF report
