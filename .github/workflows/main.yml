@@ -22,6 +22,7 @@ jobs:
           SONAR_ORGANIZATION : ravisanchala123456
       - name: Retrieve SonarCloud JSON Report
         run: |
+          ls -l $GITHUB_WORKSPACE
           # Define the API endpoint and parameters
           api_url="https://sonarcloud.io/api/measures/component?component=ravisanchala123456_testprojectname&metricKeys=ncloc,complexity"
           # Replace `my_project_key` and `metricKeys` with appropriate values
