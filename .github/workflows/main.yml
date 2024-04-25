@@ -17,11 +17,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Install tfsec
+      # Install the latest version of tfsec from GitHub using go install
       - name: Install tfsec
         run: |
-          # Download and execute the tfsec installation script
-          curl -fsSL https://aquasecurity.github.io/tfsec/install.sh | sh
+          go install github.com/aquasecurity/tfsec/cmd/tfsec@latest
 
           # Verify installation
           which tfsec
