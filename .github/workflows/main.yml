@@ -32,7 +32,11 @@ jobs:
           # Display the JSON report
           echo "SonarCloud JSON Report:"
           cat sonar_report.json
-
+      # Install dependencies
+      - name: Install Dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install sarif-tools 
       - name: Convert JSON to SARIF
         run: |
           # Implement your conversion logic here
