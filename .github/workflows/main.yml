@@ -23,6 +23,8 @@ jobs:
           curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
           tfsec --version
           echo "hi:"
+          tfsec ./ --format sarif --out tfsec_report.sarif
+          echo "------"
           # Get the latest Trivy version
           TRIVY_VERSION=$(curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep tag_name | awk '{print $2}' | tr -d '",')
           # Download the latest Trivy binary using wget
