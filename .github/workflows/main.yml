@@ -23,7 +23,17 @@ jobs:
           curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
           tfsec --version
           echo "hi:"
-          trivy fs --security-checks vuln ./ --format sarif --output trivy_report.sarif
+          # Get the latest Trivy version
+          TRIVY_VERSION=$(curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep tag_name | awk '{print $2}' | tr -d '",')
+          # Download the latest Trivy binary
+          curl -LO "https://github.com/aquasecurity/trivy/releases/download/$TRIVY_VERSION/trivy_Linux-64bit.tar.gz"
+          # Extract the binary
+          tar -xzf trivy_Linux-64bit.tar.gz
+          # Move the binary to /usr/local/bin/ so that it is in the PATH
+          sudo mv trivy /usr/local/bin/
+          # Verify Trivy installation
+          which trivy
+
           echo "hello"
           echo "deb [trusted=yes] https://aquasecurity.github.io/trivy-repo/ /" | sudo tee -a /etc/apt/sources.list.d/trivy.list
           sudo apt-get update
