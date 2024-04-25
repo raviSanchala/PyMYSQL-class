@@ -25,13 +25,12 @@ jobs:
           echo "RUNNER_WORKSPACE: $RUNNER_WORKSPACE"
           export PATH=$PATH:$RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/
           ls -l $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin
-          curl -I http://localhost:9000 || echo "Unable to connect to SonarQube server."
           $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner --version
           $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
-            -Dsonar.projectKey=my-project \
+            -Dsonar.projectKey=raviSanchala_PyMYSQL-class \
             -Dsonar.sources=src/ \
-            -Dsonar.report.export.format=sarif \
-            -Dsonar.report.export.path=./output/
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       
       - name: Debug - List contents of workspace
         run: ls -l $RUNNER_WORKSPACE/PyMYSQL-class
