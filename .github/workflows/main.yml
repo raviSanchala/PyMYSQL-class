@@ -25,6 +25,8 @@ jobs:
           echo "hi:"
           ls -l
           echo "---";
+          trivy --version
+          echo "000000"
           echo "Running tfsec analysis..."
           trivy fs --security-checks vuln ../.. --format sarif --output ../trivy_report.sarif
           echo "+++++"
