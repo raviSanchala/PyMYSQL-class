@@ -35,7 +35,7 @@ jobs:
       
       - name: SonarQube Scan
         run: |
-          sonar-scanner \
+          $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner/sonar-scanner \
             -Dsonar.projectKey=my-project \
             -Dsonar.sources=src/ \
             -Dsonar.report.export.format=sarif \
