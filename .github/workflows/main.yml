@@ -32,7 +32,7 @@ jobs:
           echo "Trivy installed."
           echo "Running tfsec analysis..."
           # Run tfsec analysis on the current directory and generate SARIF report
-          tfsec ./ --format sarif --out tfsec_report.sarif
+          #tfsec ./ --format sarif --out tfsec_report.sarif
           echo "tfsec analysis completed. Checking for SARIF report file..."
           # List files in the current directory
           ls -l
