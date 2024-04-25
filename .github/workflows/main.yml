@@ -23,7 +23,7 @@ jobs:
           curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
           tfsec --version
           echo "hi:"
-          run: ls -l
+          ls -l
           echo "---";
           tfsec ./ --format sarif --out tfsec_report.sarif
            echo "===";
