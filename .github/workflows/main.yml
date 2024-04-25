@@ -26,6 +26,7 @@ jobs:
           ls -l
           echo "---";
           trivy --version
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.18.3
           echo "000000"
             tfsec ./ --format sarif --out tfsec_report.sarif
           env:
