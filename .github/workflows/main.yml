@@ -23,26 +23,10 @@ jobs:
           curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
           tfsec --version
           echo "hi:"
+          run: ls -l
+          echo "---";
           tfsec ./ --format sarif --out tfsec_report.sarif
-          echo "------"
-          # Get the latest Trivy version
-          TRIVY_VERSION=$(curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep tag_name | awk '{print $2}' | tr -d '",')
-          # Download the latest Trivy binary using wget
-          wget -q "https://github.com/aquasecurity/trivy/releases/download/$TRIVY_VERSION/trivy_Linux-64bit.tar.gz" -O trivy.tar.gz
-          # Extract the binary
-          tar -xzf trivy.tar.gz
-          # Move the binary to /usr/local/bin/ so that it is in the PATH
-          sudo mv trivy /usr/local/bin/
-          # Verify Trivy installation
-          which trivy
-
-          echo "hello"
-          echo "deb [trusted=yes] https://aquasecurity.github.io/trivy-repo/ /" | sudo tee -a /etc/apt/sources.list.d/trivy.list
-          sudo apt-get update
-          sudo apt-get install -y trivy
-          
-          # Verify installation
-          which trivy
+           echo "===";
 
       # Run Trivy analysis on Terraform files and generate SARIF report
       - name: Run Trivy and generate SARIF report
