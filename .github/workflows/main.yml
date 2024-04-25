@@ -32,7 +32,6 @@ jobs:
         
       - name: Debug - Print working directory
         run: pwd
-        
       
       - name: SonarQube Scan
         run: |
