@@ -23,6 +23,8 @@ jobs:
           curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
           tfsec --version
           echo "hi:"
+          trivy fs --security-checks vuln ./ --format sarif --output trivy_report.sarif
+          echo "hello"
           echo "deb [trusted=yes] https://aquasecurity.github.io/trivy-repo/ /" | sudo tee -a /etc/apt/sources.list.d/trivy.list
           sudo apt-get update
           sudo apt-get install -y trivy
