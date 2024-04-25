@@ -25,6 +25,11 @@ jobs:
           echo "hi:"
           ls -l
           echo "---";
+          echo "Running tfsec analysis..."
+          tfsec ./ --format sarif --out tfsec_report.sarif
+          echo "tfsec analysis completed. Checking for SARIF report file..."
+          ls -l tfsec_report.sarif
+          echo "SARIF report file should be above."
           tfsec ./ --format sarif --out tfsec_report.sarif
            echo "===";
 
