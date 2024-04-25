@@ -15,14 +15,17 @@ jobs:
       # Checkout code
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Shallow clones should be disabled for better relevancy of analysis
 
-      # Install Trivy
+      # Add Aqua Security repository and install Trivy
       - name: Install Trivy
         run: |
-          curl -sfL https://aquasecurity.github.io/trivy-repo/get | sh
-          which trivy
+          echo "deb [trusted=yes] https://aquasecurity.github.io/trivy-repo/ /" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install -y trivy
           
+          # Verify installation
+          which trivy
 
       # Run Trivy analysis on Terraform files and generate SARIF report
       - name: Run Trivy and generate SARIF report
