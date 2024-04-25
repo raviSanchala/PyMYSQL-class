@@ -1,0 +1,51 @@
+name: Terraform SonarCloud Scan
+
+on:
+  push:
+    branches: master
+
+jobs:
+  terraform-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+      # Configure SonarCloud authentication (using a secret)
+    - name: Create SonarCloud secret
+      run: |
+        echo "SONARCLOUD_TOKEN=${{ secrets.SONAR_TOKEN }}"
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+    - name: Install Terraform
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y terraform
+
+    # Scan Terraform code using SonarScanner
+    - name: Analyze Terraform with SonarScanner
+      run: |
+        sonar-scanner \
+          -Dsonar.projectKey=raviSanchala_PyMYSQL-class-1 \
+          -Dsonar.sources=. \
+          -Dsonar.host.url=https://sonarcloud.io \
+          -Dsonar.login=$SONAR_TOKEN \
+          -Dsonar.language=terraform \
+          -Dsonar.terraform.binaries=/usr/local/bin/terraform  # Adjust if Terraform is in a different location
+
+    - name: Upload SonarCloud analysis report
+      uses: actions/upload-artifact@v3
+      with:
+        name: sonarcloud-report
+        path: sonar-project.properties
+
+      # Publish a workflow status comment with SonarCloud analysis details (optional)
+    - name: Publish Workflow Status Comment
+      run: |
+        echo "**SonarCloud Analysis Results:**" >> $GITHUB_EVENT_NOTE
+        echo "[View Report](https://sonarcloud.io/dashboard?id=raviSanchala_PyMYSQL-class-1)" >> $GITHUB_EVENT_NOTE
+      env:
+        GITHUB_EVENT_NOTE: $(echo "::add-file::sonarcloud-report.txt")
+
+
