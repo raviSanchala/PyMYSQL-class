@@ -1,52 +1,36 @@
-name: Build
+name: Terraform Security Analysis
+
 on:
   push:
     branches:
       - master
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
-  sonarcloud:
-    name: SonarCloud
+  tfsec-analysis:
+    name: Terraform Security Analysis
     runs-on: ubuntu-latest
     steps:
+      # Checkout code
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.PROGITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_PROJECT_KEY : ravisanchala123456_testprojectname
-          SONAR_ORGANIZATION : ravisanchala123456
-      - name: Retrieve SonarCloud JSON Report
-        run: |
-          ls -l $GITHUB_WORKSPACE
-          # Define the API endpoint and parameters
-          api_url="https://sonarcloud.io/api/measures/component?component=ravisanchala123456_testprojectname&metricKeys=ncloc,complexity"
-          # Replace `my_project_key` and `metricKeys` with appropriate values
+          fetch-depth: 0
 
-          # Make the API request and save the JSON report to a file
-          curl -u "${{ secrets.SONAR_TOKEN }}:" "$api_url" -o ./sonar_report.json
-          
-          # Display the JSON report
-          echo "SonarCloud JSON Report:"
-          cat sonar_report.json
-          sudo pip install joern2sarif
-          joern2sarif -t ocular -i ./sonar_report.json -o ${GITHUB_WORKSPACE}/reports/ocular-findings.sarif
+      # Install tfsec
+      - name: Install tfsec
+        run: |
+          curl -fsSL https://aquasecurity.github.io/tfsec/install.sh | sh
+
+      # Run tfsec analysis and generate SARIF report
+      - name: Run tfsec and generate SARIF report
+        run: |
+          tfsec path/to/terraform/files --format sarif --out tfsec_report.sarif
+
+      # Upload SARIF report to GitHub
+      - name: Upload SARIF Report to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: tfsec_report.sarif
         env:
-          WORKSPACE: ""
-      - name: Convert to sarif
-        run: |
-          
-        
-      # Install dependencies
-      - name: Install Dependencies
-        run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install sarif-tools 
-          python3 -c "import json, sys; from sarif_converter import convert; convert('sonar_report.json', 'sonar_report.sarif')"
-          
-        
-          
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
