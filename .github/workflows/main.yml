@@ -32,6 +32,12 @@ jobs:
           # Display the JSON report
           echo "SonarCloud JSON Report:"
           cat sonar_report.json
+
+      - name: Convert to sarif
+        run: |
+          sudo pip install joern2sarif
+          joern2sarif -t ocular -i sonar_report.json -o ocular-findings.sarif
+        
       # Install dependencies
       - name: Install Dependencies
         run: |
