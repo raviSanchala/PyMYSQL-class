@@ -30,9 +30,18 @@ jobs:
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
           trivy --version
           echo "Trivy installed."
-          echo "Starting tfsec analysis..."
-          # Run tfsec analysis on the current directory (root directory)
+          echo "Running tfsec analysis..."
+          # Run tfsec analysis on the current directory and generate SARIF report
           tfsec ./ --format sarif --out tfsec_report.sarif
+          echo "tfsec analysis completed. Checking for SARIF report file..."
+          # List files in the current directory
+          ls -l
+          echo "SARIF report file should be listed above."
+          # Display file contents if the file exists
+          if [ -f tfsec_report.sarif ]; then
+            echo "Contents of tfsec_report.sarif:"
+            cat tfsec_report.sarif
+          fi
           
       
       - name: Run tfsec analysis and generate SARIF report
