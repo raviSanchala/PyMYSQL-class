@@ -29,7 +29,7 @@ jobs:
       # Run tfsec analysis on Terraform files
       - name: Run tfsec and generate SARIF report
         run: |
-          tfsec path/to/terraform/files --format sarif --out tfsec_report.sarif
+          tfsec ./ --format sarif --out tfsec_report.sarif
         # Specify the directory containing your Terraform files
 
       # Upload SARIF Report to GitHub
