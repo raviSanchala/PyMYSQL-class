@@ -8,34 +8,29 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  tfsec-analysis:
+  trivy-analysis:
     name: Terraform Security Analysis
     runs-on: ubuntu-latest
     steps:
       # Checkout code
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for better relevancy of analysis
+          fetch-depth: 0
 
-      # Install tfsec
-      - name: Install tfsec
+      # Install Trivy
+      - name: Install Trivy
         run: |
-          # Use go install to install tfsec
-          curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
-          
-          # Verify installation
-          which tfsec
+          curl -sfL https://aquasecurity.github.io/trivy-repo/get | sh
 
-      # Run tfsec analysis on Terraform files
-      - name: Run tfsec and generate SARIF report
+      # Run Trivy analysis on Terraform files and generate SARIF report
+      - name: Run Trivy and generate SARIF report
         run: |
-          tfsec ./ --format sarif --out tfsec_report.sarif
-        # Specify the directory containing your Terraform files
+          trivy fs --security-checks vuln ./ --format sarif --output trivy_report.sarif
 
       # Upload SARIF Report to GitHub
       - name: Upload SARIF Report to GitHub
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: tfsec_report.sarif
+          sarif_file: trivy_report.sarif
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
