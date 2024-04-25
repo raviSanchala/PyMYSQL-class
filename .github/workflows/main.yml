@@ -37,10 +37,7 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install sarif-tools 
-      - name: Convert JSON to SARIF
-        run: |
-          # Implement your conversion logic here
-          # This could be a Python script, for example
           python3 -c "import json, sys; from sarif_converter import convert; convert('sonar_report.json', 'sonar_report.sarif')"
+          
         
           
