@@ -35,10 +35,10 @@ jobs:
           $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
             -Dsonar.projectKey=raviSanchala_PyMYSQL-class \
             -Dsonar.sources=. \
+            -Dsonar.inclusions=**/*.tf \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-            -Dsonar.language=terraform \
-            -Dsonar.inclusions=**/*.tf
+            -Dsonar.language=terraform
       
       - name: Debug - List contents of workspace
         run: ls -l $RUNNER_WORKSPACE/PyMYSQL-class
