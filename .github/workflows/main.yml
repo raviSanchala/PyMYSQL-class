@@ -20,14 +20,19 @@ jobs:
       # Install tfsec
       - name: Install tfsec
         run: |
+          # Download and execute the tfsec installation script
           curl -fsSL https://aquasecurity.github.io/tfsec/install.sh | sh
 
-      # Run tfsec analysis and generate SARIF report
+          # Verify installation
+          which tfsec
+
+      # Run tfsec analysis on Terraform files and generate SARIF report
       - name: Run tfsec and generate SARIF report
         run: |
-          tfsec path/to/terraform/files --format sarif --out tfsec_report.sarif
+          tfsec . --format sarif --out tfsec_report.sarif
+        # Specify the directory containing your Terraform files
 
-      # Upload SARIF report to GitHub
+      # Upload SARIF Report to GitHub
       - name: Upload SARIF Report to GitHub
         uses: github/codeql-action/upload-sarif@v2
         with:
