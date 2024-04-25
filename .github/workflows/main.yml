@@ -19,4 +19,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PROGITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_PROJECT_KEY : ravisanchala123456_testprojectname
+      - name: Retrieve SonarCloud JSON Report
+        run: |
+          # Define the API endpoint and parameters
+          api_url="https://sonarcloud.io/api/measures/component?component=ravisanchala123456_testprojectname&metricKeys=ncloc,complexity"
+          # Replace `my_project_key` and `metricKeys` with appropriate values
+
+          # Make the API request and save the JSON report to a file
+          curl -u "${{ secrets.SONAR_TOKEN }}:" "$api_url" -o sonar_report.json
+          
+          # Display the JSON report
+          echo "SonarCloud JSON Report:"
+          cat sonar_report.json
           SONAR_ORGANIZATION : ravisanchala123456
