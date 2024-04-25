@@ -52,12 +52,10 @@ jobs:
       - name: SonarQube Scan
         run: |
           sonar-scanner \
-            -Dsonar.projectKey=raviSanchala_PyMYSQL-class-1 \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }} \
-            -Dsonar.sources=. \
-            -Dsonar.inclusions=mysql_connect.py,**/*.tf \
-            -Dsonar.language=py \
-            -Dsonar.verbose=true
-
+            -Dsonar.report.export.format=sarif \
+            -Dsonar.report.export.path=./output/
+      - name: Upload SARIF file to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ./output/your_sarif_file.sarif
       
