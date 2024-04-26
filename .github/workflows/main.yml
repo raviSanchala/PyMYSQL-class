@@ -7,17 +7,17 @@ on:
   pull_request:
     branches:
       - master
-      
+
 jobs:
   code_scan:
     runs-on: ubuntu-latest
+    permissions:
+      # required for all workflows
+      security-events: write
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
     steps:
-      - name: Set up JDK 8
-        uses: actions/setup-java@v3
-        with:
-          java-version: '8'
-          distribution: 'adopt'
-  
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -26,35 +26,22 @@ jobs:
           wget -q -O sonar-scanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip"
           unzip -q sonar-scanner.zip
           ls -l
+          echo "-----"
           ls -l sonar-scanner-4.7.0.2747-linux
-          ls -l sonar-scanner-4.7.0.2747-linux/bin/
+          echo "==="
+          ls -l sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner
+          chmod +x sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner
           echo "RUNNER_WORKSPACE: $RUNNER_WORKSPACE"
-          export PATH=$PATH:$RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/
-          ls -l $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin
-          $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner --version
-          $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
+          export PATH=$PATH:$RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin
+          echo "Hi:"
+          ls -l $RUNNER_WORKSPACE/PyMYSQL-class
+          sonar-scanner --version
+          sonar-scanner \
             -Dsonar.projectKey=raviSanchala_PyMYSQL-class \
-            -Dsonar.sources=. \
-            -Dsonar.inclusions=**/*.tf \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-            -Dsonar.language=terraform
-      
-      - name: Debug - List contents of workspace
-        run: ls -l $RUNNER_WORKSPACE/PyMYSQL-class
-        
-      - name: Debug - Print working directory
-        run: pwd
-      
-      - name: SonarQube Scan
-        run: |
-          $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner/sonar-scanner \
-            -Dsonar.projectKey=my-project \
-            -Dsonar.sources=src/ \
-            -Dsonar.report.export.format=sarif \
-            -Dsonar.report.export.path=./output/
-      - name: Upload SARIF file to GitHub
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: ./output/your_sarif_file.sarif
-      
+            -Dsonar.sources=. \
+            -Dsonar.inclusions=**/*.tf \
+            -Dsonar.language=terraform \
+            -Dsonar.verbose=true
+                 
