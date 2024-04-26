@@ -1,30 +1,43 @@
-name: tfsec
+name: Terraform Code Scan
+
 on:
   push:
     branches:
       - master
   pull_request:
+    branches:
+      - master
+      
 jobs:
-  tfsec:
-    name: tfsec sarif report
+  code_scan:
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
     steps:
-      - name: Clone repo
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+  
+      - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          persist-credentials: false
 
-      - name: tfsec
-        uses: aquasecurity/tfsec-sarif-action@v0.1.0
-        with:
-          sarif_file: tfsec.sarif          
-
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v1
-        with:
-          # Path to SARIF file relative to the root of the repository
-          sarif_file: tfsec.sarif     
+      - name: Download and Install SonarScanner
+        run: |
+          wget -q -O sonar-scanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip"
+          unzip -q sonar-scanner.zip
+          ls -l
+          ls -l sonar-scanner-4.7.0.2747-linux
+          ls -l sonar-scanner-4.7.0.2747-linux/bin/
+          echo "RUNNER_WORKSPACE: $RUNNER_WORKSPACE"
+          export PATH=$PATH:$RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/
+          ls -l $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin
+          $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner --version
+          $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner \
+            -Dsonar.projectKey=raviSanchala_PyMYSQL-class \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.language=terraform \
+            -Dsonar.inclusions=**/*.tf
+      
+     
