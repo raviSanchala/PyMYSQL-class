@@ -1,47 +1,46 @@
-name: Terraform Code Scan
+name: SonarCloud Scan
 
 on:
   push:
     branches:
-      - master
+      - master  # Adjust branch name if needed
   pull_request:
     branches:
-      - master
+      - master  # Adjust branch name if needed
 
 jobs:
-  code_scan:
+  sonarcloud_scan:
+    name: SonarCloud Scan
     runs-on: ubuntu-latest
-    permissions:
-      # required for all workflows
-      security-events: write
-      # only required for workflows in private repositories
-      actions: read
-      contents: read
+
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Download and Install SonarScanner
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: |
+            ${{ runner.os }}-sonar
+
+      - name: SonarCloud Scan
         run: |
-          wget -q -O sonar-scanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip"
-          unzip -q sonar-scanner.zip
-          ls -l
-          echo "-----"
-          ls -l sonar-scanner-4.7.0.2747-linux
-          echo "==="
-          ls -l sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner
-          chmod +x sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner
-          echo "RUNNER_WORKSPACE: $RUNNER_WORKSPACE"
-          export PATH=$PATH:$RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin
-          echo "Hi:"
-          ls -l $RUNNER_WORKSPACE/PyMYSQL-class
-          sonar-scanner --version
-          sonar-scanner \
+          ./gradlew sonarqube \
+            -Dsonar.organization=ravisanchala123456 \
             -Dsonar.projectKey=raviSanchala_PyMYSQL-class \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-            -Dsonar.sources=. \
-            -Dsonar.inclusions=**/*.tf \
-            -Dsonar.language=terraform \
-            -Dsonar.verbose=true
-                 
+            -Dsonar.login=eceb47eddb02aae6f1122eff33d034afb61c8595
+
+      - name: Upload SonarCloud Quality Gate status
+        if: always()
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: build/reports/sonar/sonar-report.json
