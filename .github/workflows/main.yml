@@ -1,51 +1,53 @@
-name: SonarCloud Scan
+name: Terraform Code Scan
 
 on:
   push:
     branches:
-      - master  # Adjust branch name if needed
+      - master
   pull_request:
     branches:
-      - master  # Adjust branch name if needed
+      - master
 
 jobs:
-  sonarcloud_scan:
-    name: SonarCloud Scan
+  code_scan:
     runs-on: ubuntu-latest
-
+    permissions:
+      # required for all workflows
+      security-events: write
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
     steps:
-      - name: Set up Java 8
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: '8'
-      
-      - name: SonarCloud Scan
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download and Install SonarScanner
         run: |
-          wget -q -O sonar-scanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip"
-          ls -l
-          unzip -q sonar-scanner.zip
-          echo "-------+++++++"
-          ls -l /home/runner/work/
-          echo "-------"
-          ls -l /home/runner/work/PyMYSQL-class/PyMYSQL-class/
-          echo "++++++++"
-          ls -l /home/runner/work/PyMYSQL-class/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/
-          echo "========="
+          ls -l 
+          echo  "__"
           ls -l $RUNNER_WORKSPACE
-          cat /home/runner/work/PyMYSQL-class/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/conf/sonar-scanner.properties
-          sed -i 's|^sonar.host.url=.*$|sonar.host.url=https://sonarcloud.io|' /home/runner/work/PyMYSQL-class/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/conf/sonar-scanner.properties
-          echo "+++++++++++------"
-          cat /home/runner/work/PyMYSQL-class/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/conf/sonar-scanner.properties
-          echo "++++++++++++==="
-          export PATH=$PATH:$RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/bin/
-          $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner --version
-          $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
+          echo "++"
+          wget -q -O sonar-scanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip"
+          unzip -q sonar-scanner.zip
+          ls -l
+          echo "-----"
+          ls -l sonar-scanner-4.7.0.2747-linux
+          echo "==="
+          ls -l sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner
+          chmod +x sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner
+          echo "RUNNER_WORKSPACE: $RUNNER_WORKSPACE"
+          export PATH=$PATH:$RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-4.7.0.2747-linux/bin
+          echo "Hi:"
+          ls -l $RUNNER_WORKSPACE/PyMYSQL-class
+          sonar-scanner --version
+          mkdir -p $(dirname ./coverage-report.xml)
+          sonar-scanner \
             -Dsonar.projectKey=raviSanchala_PyMYSQL-class \
             -Dsonar.organization=ravisanchala123456
-            -Dsonar.sources=. \
-            -Dsonar.inclusions=**/*.tf \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-            -Dsonar.language=terraform
-
+            -Dsonar.sources=. \
+            -Dsonar.inclusions=**/*.tf \
+            -Dsonar.language=terraform \
+            -Dsonar.verbose=true
+                 
