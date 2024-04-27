@@ -42,10 +42,11 @@ jobs:
           sonar-scanner --version
           mkdir -p $(dirname ./coverage-report.xml)
           sonar-scanner \
-            -Dsonar.projectKey=raviSanchala_PyMYSQL-class \
-            -Dsonar.organization=ravisanchala123456
+            -Dsonar.projectKey=raviSanchala_PyMYSQL-class1 \
+            -Dsonar.organization=ravisanchala97980798797797098078
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            #-Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.login=70a739b14d79033cf77fc72c3a1502c62e4a7795
             -Dsonar.sources=. \
             -Dsonar.inclusions=**/*.tf \
             -Dsonar.language=terraform \
