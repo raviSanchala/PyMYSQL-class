@@ -14,6 +14,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set up Java 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: 8
       - name: SonarCloud Scan
         run: |
           wget -q -O sonar-scanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.7.0.2747-linux.zip"
