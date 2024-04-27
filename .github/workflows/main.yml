@@ -37,12 +37,12 @@ jobs:
           export PATH=$PATH:$RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/bin/
           $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner --version
           $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
-            -Dsonar.organization=testsonnarforgithubravi \
-            -Dsonar.projectKey=testsonnarforgithubravi_testsonnarforgithubravi \
+            -Dsonar.projectKey=raviSanchala_PyMYSQL-class \
             -Dsonar.sources=. \
+            -Dsonar.inclusions=**/*.tf \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.plugins.disabled=python \
-            -Dsonar.inclusions=**/*.tf
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.language=terraform
 
       - name: Upload SonarCloud Quality Gate status
         if: always()
