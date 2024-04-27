@@ -33,6 +33,7 @@ jobs:
           ls -l /home/runner/work/PyMYSQL-class/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/
           echo "========="
           ls -l $RUNNER_WORKSPACE
+          cat /home/runner/work/PyMYSQL-class/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/conf/sonar-scanner.properties
           echo "++++++++++++==="
           export PATH=$PATH:$RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/bin/
           $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner --version
