@@ -38,6 +38,7 @@ jobs:
           $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner --version
           $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
             -Dsonar.projectKey=raviSanchala_PyMYSQL-class \
+            -Dsonar.organization=ravisanchala123456
             -Dsonar.sources=. \
             -Dsonar.inclusions=**/*.tf \
             -Dsonar.host.url=https://sonarcloud.io \
