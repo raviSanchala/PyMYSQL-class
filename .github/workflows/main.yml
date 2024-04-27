@@ -28,15 +28,15 @@ jobs:
           echo "-------+++++++"
           ls -l /home/runner/work/
           echo "-------"
-          ls -l /home/runner/work/phpdbo/phpdbo/
+          ls -l /home/runner/work/PyMYSQL-class/PyMYSQL-class/
           echo "++++++++"
-          ls -l /home/runner/work/phpdbo/phpdbo/sonar-scanner-5.0.1.3006-linux/
+          ls -l /home/runner/work/PyMYSQL-class/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/
           echo "========="
           ls -l $RUNNER_WORKSPACE
           echo "++++++++++++==="
-          export PATH=$PATH:$RUNNER_WORKSPACE/phpdbo/sonar-scanner-5.0.1.3006-linux/bin/
-          $RUNNER_WORKSPACE/phpdbo/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner --version
-          $RUNNER_WORKSPACE/phpdbo/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
+          export PATH=$PATH:$RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/bin/
+          $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner --version
+          $RUNNER_WORKSPACE/PyMYSQL-class/sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner \
             -Dsonar.organization=testsonnarforgithubravi \
             -Dsonar.projectKey=testsonnarforgithubravi_testsonnarforgithubravi \
             -Dsonar.sources=. \
